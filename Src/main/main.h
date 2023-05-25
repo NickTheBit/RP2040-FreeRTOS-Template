@@ -1,12 +1,24 @@
-/**
- * RP2040 FreeRTOS Template
- *
- * @copyright 2022, Tony Smith (@smittytone)
- * @version   1.4.1
- * @license   MIT
- *
- */
 #pragma once
+
+#ifndef GIT_HASH
+#define GIT_HASH 0x000000
+#endif
+
+#ifndef PROJECT_NAME
+#define PROJECT_NAME "PROJECT_NAME_UNDEFINED"
+#endif
+
+#ifndef PROJECT_VERSION_MAJOR
+#define PROJECT_VERSION_MAJOR 0x0
+#endif
+
+#ifndef PROJECT_VERSION_MINOR
+#define PROJECT_VERSION_MINOR 0x0
+#endif
+
+#ifndef PROJECT_VERSION_PATCH
+#define PROJECT_VERSION_PATCH 0x0
+#endif
 
 // FreeRTOS
 #include <FreeRTOS.h>

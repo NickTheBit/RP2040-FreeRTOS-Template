@@ -16,6 +16,7 @@ add_compile_definitions(APP_NAME="${PROJECT_NAME}")
 add_compile_definitions(APP_VERSION="${APP_1_VERSION_NUMBER}")
 add_compile_definitions(BUILD_NUM=${BUILD_NUMBER})
 
+# Inserting FreeRTOS paths
 set(FREERTOS_CFG_DIRECTORY "${CMAKE_SOURCE_DIR}")
 set(FREERTOS_SRC_DIRECTORY "${CMAKE_SOURCE_DIR}/Middlewares/FreeRTOS-Kernel")
 
@@ -50,7 +51,6 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 
 file(GLOB_RECURSE PROJECT_SOURCES Src/*.cpp)
 
-message(STATUS ${PROJECT_SOURCES})
 target_sources(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCES})
 
 target_compile_options(${PROJECT_NAME} PUBLIC
@@ -72,3 +72,18 @@ pico_enable_stdio_uart(${PROJECT_NAME} 1)
 
 # Enable extra build products
 pico_add_extra_outputs(${PROJECT_NAME})
+
+# Computing internal code definitions
+# Getting latest commit hash (not entirely safe)
+execute_process(
+    COMMAND git log -1 --format=%h
+    WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
+    OUTPUT_VARIABLE GIT_HASH
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+
+target_compile_definitions(${PROJECT_NAME} PUBLIC GIT_HASH=${GIT_HASH})
+target_compile_definitions(${PROJECT_NAME} PUBLIC PROJECT_NAME="${PROJECT_NAME}")
+target_compile_definitions(${PROJECT_NAME} PUBLIC PROJECT_VERSION_MAJOR=${PROJECT_VERSION_MAJOR})
+target_compile_definitions(${PROJECT_NAME} PUBLIC PROJECT_VERSION_MINOR=${PROJECT_VERSION_MINOR})
+target_compile_definitions(${PROJECT_NAME} PUBLIC PROJECT_VERSION_PATCH=${PROJECT_VERSION_PATCH})
