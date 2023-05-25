@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.25)
 
 # Pull in SDK (must be before project)
-include(pico_sdk_import.cmake)
-include(pico_extras_import_optional.cmake)
+include(cmakeScripts/pico_sdk_import.cmake)
+include(cmakeScripts/pico_extras_import_optional.cmake)
 
 project(FreeRTOS-Template
         VERSION 0.0.0)
