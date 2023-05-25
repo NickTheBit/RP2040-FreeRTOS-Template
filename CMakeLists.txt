@@ -47,7 +47,8 @@ add_executable(${PROJECT_NAME})
 
 target_include_directories(${PROJECT_NAME} PUBLIC
         ${PROJECT_SOURCE_DIR}/Src/
-        ${PROJECT_SOURCE_DIR}/Src/main/)
+        ${PROJECT_SOURCE_DIR}/Src/main/
+        ${PROJECT_SOURCE_DIR}/Src/HAL/)
 
 file(GLOB_RECURSE PROJECT_SOURCES Src/*.cpp)
 
