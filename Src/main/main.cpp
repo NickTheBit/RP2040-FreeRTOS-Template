@@ -30,7 +30,7 @@ int main() {
 #endif
 
 	// Setting up primary Task.
-	BaseType_t pico_status = xTaskCreate(primaryTask, "primaryTask", 128, NULL,
+	BaseType_t pico_status = xTaskCreate(primaryTask, "primaryTask", 128, nullptr,
 										 1, &primaryTaskHandle);
 
 	// Log app info

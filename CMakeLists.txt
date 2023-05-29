@@ -11,11 +11,6 @@ if (PICO_SDK_VERSION_STRING VERSION_LESS "1.3.0")
     message(FATAL_ERROR "Raspberry Pi Pico SDK version 1.3.0 (or later) required. Your version is ${PICO_SDK_VERSION_STRING}")
 endif()
 
-# Make project data accessible to compiler
-add_compile_definitions(APP_NAME="${PROJECT_NAME}")
-add_compile_definitions(APP_VERSION="${APP_1_VERSION_NUMBER}")
-add_compile_definitions(BUILD_NUM=${BUILD_NUMBER})
-
 # Inserting FreeRTOS paths
 set(FREERTOS_CFG_DIRECTORY "${CMAKE_SOURCE_DIR}")
 set(FREERTOS_SRC_DIRECTORY "${CMAKE_SOURCE_DIR}/Middlewares/FreeRTOS-Kernel")
@@ -59,6 +54,7 @@ target_compile_options(${PROJECT_NAME} PUBLIC
     -Wno-format          # int != int32_t as far as the compiler is concerned because gcc has int32_t as long int
     -Wno-unused-function # we have some for the docs that aren't called
     -Wno-maybe-uninitialized
+    -g
     )
 
 # Link to built libraries
