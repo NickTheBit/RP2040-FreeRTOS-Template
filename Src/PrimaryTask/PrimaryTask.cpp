@@ -7,8 +7,8 @@
 
 #include "PrimaryTask.hh"
 #include "main/main.h"
-#include "HAL/GPIOPinInterface/GPIOPinInterface.hh"
-#include "HAL/GPIOPinInterface/RP2040/RP2040_GPIOPin.hh"
+#include "HAL/GPIOPinInterface.hh"
+#include "HAL/RP2040/PR2040_GPIO/RP2040_GPIOPin.hh"
 
 void primaryTask(void *arguments) {
 	// Configure the Pico's on-board LED as a heartbeat indicator.
