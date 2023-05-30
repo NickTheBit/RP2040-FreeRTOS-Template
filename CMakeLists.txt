@@ -79,7 +79,7 @@ execute_process(
     OUTPUT_STRIP_TRAILING_WHITESPACE
     )
 
-target_compile_definitions(${PROJECT_NAME} PUBLIC GIT_HASH=${GIT_HASH})
+target_compile_definitions(${PROJECT_NAME} PUBLIC GIT_HASH=0x${GIT_HASH})
 target_compile_definitions(${PROJECT_NAME} PUBLIC PROJECT_NAME="${PROJECT_NAME}")
 target_compile_definitions(${PROJECT_NAME} PUBLIC PROJECT_VERSION_MAJOR=${PROJECT_VERSION_MAJOR})
 target_compile_definitions(${PROJECT_NAME} PUBLIC PROJECT_VERSION_MINOR=${PROJECT_VERSION_MINOR})

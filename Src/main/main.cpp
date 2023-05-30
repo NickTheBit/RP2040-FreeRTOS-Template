@@ -16,14 +16,20 @@ TaskHandle_t primaryTaskHandle = nullptr;
  * RUNTIME START
  */
 int main() {
-// Enable STDIO
-#ifdef DEBUG
-	stdio_usb_init();
-#endif
+    // Enable STDIO
+    stdio_init_all();
 
 	// Setting up primary Task.
 	BaseType_t pico_status = xTaskCreate(primaryTask, "primaryTask", 128, nullptr,
 										 1, &primaryTaskHandle);
+
+    // Reporting Firmware info on UART
+    printf("*************************************\n\t%s\n-------------------------------------\nVersion: %d.%d.%d\nCommit hash: %x\n*************************************\n",
+           PROJECT_NAME,
+           PROJECT_VERSION_MAJOR,
+           PROJECT_VERSION_MINOR,
+           PROJECT_VERSION_PATCH,
+           GIT_HASH);
 
 	// Start the FreeRTOS scheduler
 	// Only proceed with valid tasks
