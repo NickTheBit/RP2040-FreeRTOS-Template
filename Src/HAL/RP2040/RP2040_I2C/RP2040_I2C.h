@@ -19,8 +19,10 @@ private:
 public:
     RP2040_I2C(i2c_inst &hardwareInterface, uint16_t baudrateHz, uint16_t responseTimeout, bool slaveMode);
     ~RP2040_I2C();
-    uint16_t readRegister(uint8_t targetRegister, uint8_t consecutiveBytes) override;
-    void writeRegister(uint8_t targetRegister, uint8_t data) override;
+    void readBytes(uint8_t startingAddress, uint8_t consecutiveBytes, uint8_t *outputArray) override;
+    uint8_t readByte(uint8_t address) override;
+    void writeBytes(uint8_t startingAddress, uint16_t numberOfBytes, uint8_t *dataToWrite) override;
+    void writeByte(uint8_t targetAddress, uint8_t data) override;
     uint16_t getResponseTimeout() const;
     uint16_t getBaudrateHz() const;
     bool isSlaveMode() const;

@@ -28,31 +28,53 @@ RP2040_I2C::~RP2040_I2C() {
 }
 
 /**
- * @brief Reads one or more registers from the target register.
- * @param targetRegister
+ * @brief Reads multiple bytes starting from the target address.
+ * @param startingAddress
  * @param consecutiveBytes
  * @return
  */
-uint16_t RP2040_I2C::readRegister(uint8_t targetRegister, uint8_t consecutiveBytes) {
-    uint16_t returnValue = 0;
-
+void RP2040_I2C::readBytes(uint8_t startingAddress, uint8_t consecutiveBytes, uint8_t *outputArray) {
     i2c_read_timeout_us(&this->hardwareInterface,
-                        targetRegister,
-                        reinterpret_cast<uint8_t *>(&returnValue),
+                        startingAddress,
+                        outputArray,
                         consecutiveBytes,
                         consecutiveBytes > 1,
                         this->responseTimeout);
+}
+
+/**
+ * @brief Reads a single byte from the specified address.
+ * @param address
+ * @return read value.
+ */
+uint8_t RP2040_I2C::readByte(uint8_t address) {
+    uint8_t returnValue;
+    i2c_read_timeout_us(&this->hardwareInterface,
+                       address,
+                       &returnValue,
+                       1,
+                       false,
+                       this->responseTimeout);
     return returnValue;
+}
+
+void RP2040_I2C::writeBytes(uint8_t startingAddress, uint16_t numberOfBytes, uint8_t *dataToWrite) {
+    i2c_write_timeout_us(&this->hardwareInterface,
+                         startingAddress,
+                         dataToWrite,
+                         sizeof(numberOfBytes),
+                         sizeof(numberOfBytes) > 1,
+                         this->responseTimeout);
 }
 
 /**
  * @brief Writes one or more bytes of data to a specific register.
- * @param targetRegister
+ * @param targetAddress
  * @param data
  */
-void RP2040_I2C::writeRegister(uint8_t targetRegister, uint8_t data) {
+void RP2040_I2C::writeByte(uint8_t targetAddress, uint8_t data) {
     i2c_write_timeout_us(&this->hardwareInterface,
-                         targetRegister,
+                         targetAddress,
                          &data,
                          sizeof(data),
                          sizeof(data) > 1,
