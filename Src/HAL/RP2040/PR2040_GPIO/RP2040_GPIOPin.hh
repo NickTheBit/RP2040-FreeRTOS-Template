@@ -6,7 +6,7 @@
  *********************************************/
 
 #include "HAL/GPIOPinInterface.hh"
-#include "main.h"
+#include "hardware/gpio.h"
 
 class RP2040_GPIOPin : public HAL::GPIOPinInterface {
   private:
