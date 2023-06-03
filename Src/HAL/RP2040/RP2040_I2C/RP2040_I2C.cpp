@@ -4,6 +4,7 @@
  * @date   6/1/23
  ***********************************************/
 
+#include <hardware/gpio.h>
 #include "RP2040_I2C.h"
 
 /**
@@ -12,19 +13,23 @@
  * @param baudrateHz
  * @param responseTimeout
  */
-RP2040_I2C::RP2040_I2C(i2c_inst &hardwareInterface, uint16_t baudrateHz = 1000, uint16_t responseTimeout = 100,
-                       bool slaveMode = false)
-        : hardwareInterface(hardwareInterface), responseTimeout(responseTimeout), baudrateHz(baudrateHz),
-          slaveMode(slaveMode) {
-    // todo: variable baud rate needs to be supported, this is 1KHz.
-    i2c_init(&this->hardwareInterface, this->baudrateHz);
+RP2040_I2C::RP2040_I2C(i2c_inst_t *hardwareInterface, uint8_t SDAPin, uint8_t SCLPin, bool slaveMode, uint32_t baudrateHz)
+        : hardwareInterface(hardwareInterface), SCLPin(SCLPin), SDAPin(SDAPin),
+        baudrateHz(baudrateHz), slaveMode(slaveMode) {
+
+    this->baudrateHz = i2c_init(this->hardwareInterface, this->baudrateHz);
+    i2c_set_slave_mode(this->hardwareInterface,false,0x033);
+    gpio_set_function(this->SDAPin, GPIO_FUNC_I2C);
+    gpio_set_function(this->SCLPin, GPIO_FUNC_I2C);
+    gpio_pull_up(this->SDAPin);
+    gpio_pull_up(this->SCLPin);
 }
 
 /**
  * @brief De-initializes i2c the interface.
  */
 RP2040_I2C::~RP2040_I2C() {
-    i2c_deinit(&this->hardwareInterface);
+    i2c_deinit(this->hardwareInterface);
 }
 
 /**
@@ -34,12 +39,15 @@ RP2040_I2C::~RP2040_I2C() {
  * @return
  */
 void RP2040_I2C::readBytes(uint8_t startingAddress, uint8_t consecutiveBytes, uint8_t *outputArray) {
-    i2c_read_timeout_us(&this->hardwareInterface,
+    if (consecutiveBytes < 1) {
+        return;
+    }
+
+    i2c_read_blocking(this->hardwareInterface,
                         startingAddress,
                         outputArray,
                         consecutiveBytes,
-                        consecutiveBytes > 1,
-                        this->responseTimeout);
+                        false);
 }
 
 /**
@@ -49,22 +57,23 @@ void RP2040_I2C::readBytes(uint8_t startingAddress, uint8_t consecutiveBytes, ui
  */
 uint8_t RP2040_I2C::readByte(uint8_t address) {
     uint8_t returnValue;
-    i2c_read_timeout_us(&this->hardwareInterface,
+    i2c_read_blocking(this->hardwareInterface,
                        address,
                        &returnValue,
                        1,
-                       false,
-                       this->responseTimeout);
+                       false);
     return returnValue;
 }
 
 void RP2040_I2C::writeBytes(uint8_t startingAddress, uint16_t numberOfBytes, uint8_t *dataToWrite) {
-    i2c_write_timeout_us(&this->hardwareInterface,
+    if (numberOfBytes < 1)
+        return;
+
+    i2c_write_blocking(this->hardwareInterface,
                          startingAddress,
                          dataToWrite,
-                         sizeof(numberOfBytes),
-                         sizeof(numberOfBytes) > 1,
-                         this->responseTimeout);
+                         numberOfBytes,
+                         false);
 }
 
 /**
@@ -72,21 +81,13 @@ void RP2040_I2C::writeBytes(uint8_t startingAddress, uint16_t numberOfBytes, uin
  * @param targetAddress
  * @param data
  */
-void RP2040_I2C::writeByte(uint8_t targetAddress, uint8_t data) {
-    i2c_write_timeout_us(&this->hardwareInterface,
+void RP2040_I2C::writeByte(uint16_t targetAddress, uint8_t data) {
+    i2c_write_timeout_us(this->hardwareInterface,
                          targetAddress,
                          &data,
-                         sizeof(data),
-                         sizeof(data) > 1,
-                         this->responseTimeout);
-}
-
-/**
- * @brief   Getter for response timeout.
- * @return  responseTimeout.
- */
-uint16_t RP2040_I2C::getResponseTimeout() const {
-    return this->responseTimeout;
+                         1,
+                         true
+                         ,1000);
 }
 
 /**

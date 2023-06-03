@@ -8,12 +8,14 @@
 #include "PrimaryTask.hh"
 #include "main/main.h"
 #include "HAL/RP2040/PR2040_GPIO/RP2040_GPIOPin.hh"
-#include "HAL/I2CInterface.hh"
+#include "HAL/RP2040/RP2040_I2C/RP2040_I2C.h"
 
 void primaryTask(void *arguments) {
 	// Configure the Pico's on-board LED as a heartbeat indicator.
-	auto heartbeatPin = RP2040_GPIOPin(PICO_DEFAULT_LED_PIN);
 
+	auto heartbeatPin = RP2040_GPIOPin(PICO_DEFAULT_LED_PIN);
+    auto i2cBus1 = RP2040_I2C(i2c0, 20, 21, false, 1000 * 400);
+    i2cBus1.writeByte(0x76, 0x69);
 
 	while (true) {
         // Starting a heartbeat to indicate proper initialization.
