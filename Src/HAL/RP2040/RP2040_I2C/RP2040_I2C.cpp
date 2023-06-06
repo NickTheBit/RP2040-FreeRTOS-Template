@@ -5,6 +5,7 @@
  ***********************************************/
 
 #include <hardware/gpio.h>
+#include <pico/binary_info/code.h>
 #include "RP2040_I2C.h"
 
 /**
@@ -18,11 +19,12 @@ RP2040_I2C::RP2040_I2C(i2c_inst_t *hardwareInterface, uint8_t SDAPin, uint8_t SC
         baudrateHz(baudrateHz), slaveMode(slaveMode) {
 
     this->baudrateHz = i2c_init(this->hardwareInterface, this->baudrateHz);
-    i2c_set_slave_mode(this->hardwareInterface,false,0x033);
+    i2c_set_slave_mode(this->hardwareInterface,false,0x33);
     gpio_set_function(this->SDAPin, GPIO_FUNC_I2C);
     gpio_set_function(this->SCLPin, GPIO_FUNC_I2C);
     gpio_pull_up(this->SDAPin);
     gpio_pull_up(this->SCLPin);
+    bi_decl(bi_2pins_with_func((uint32_t)this->SDAPin, (uint32_t)this->SCLPin, GPIO_FUNC_I2C))
 }
 
 /**
@@ -34,60 +36,31 @@ RP2040_I2C::~RP2040_I2C() {
 
 /**
  * @brief Reads multiple bytes starting from the target address.
- * @param startingAddress
+ * @param address
  * @param consecutiveBytes
  * @return
  */
-void RP2040_I2C::readBytes(uint8_t startingAddress, uint8_t consecutiveBytes, uint8_t *outputArray) {
+void RP2040_I2C::read(uint8_t address, uint8_t consecutiveBytes, uint8_t *outputArray) {
     if (consecutiveBytes < 1) {
         return;
     }
 
-    i2c_read_blocking(this->hardwareInterface,
-                        startingAddress,
-                        outputArray,
-                        consecutiveBytes,
-                        false);
+    int error_code = i2c_read_blocking(this->hardwareInterface,
+                      address,
+                      outputArray,
+                      consecutiveBytes,
+                      true);
 }
 
-/**
- * @brief Reads a single byte from the specified address.
- * @param address
- * @return read value.
- */
-uint8_t RP2040_I2C::readByte(uint8_t address) {
-    uint8_t returnValue;
-    i2c_read_blocking(this->hardwareInterface,
-                       address,
-                       &returnValue,
-                       1,
-                       false);
-    return returnValue;
-}
-
-void RP2040_I2C::writeBytes(uint8_t startingAddress, uint16_t numberOfBytes, uint8_t *dataToWrite) {
-    if (numberOfBytes < 1)
+void RP2040_I2C::write(uint8_t startingAddress, uint8_t *payload, uint16_t payloadSize) {
+    if (payloadSize < 1)
         return;
 
     i2c_write_blocking(this->hardwareInterface,
-                         startingAddress,
-                         dataToWrite,
-                         numberOfBytes,
-                         false);
-}
-
-/**
- * @brief Writes one or more bytes of data to a specific register.
- * @param targetAddress
- * @param data
- */
-void RP2040_I2C::writeByte(uint16_t targetAddress, uint8_t data) {
-    i2c_write_timeout_us(this->hardwareInterface,
-                         targetAddress,
-                         &data,
-                         1,
-                         true
-                         ,1000);
+                       startingAddress,
+                       payload,
+                       payloadSize,
+                       true);
 }
 
 /**
