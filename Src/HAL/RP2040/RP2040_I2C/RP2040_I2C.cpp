@@ -45,7 +45,7 @@ void RP2040_I2C::read(uint8_t address, uint8_t consecutiveBytes, uint8_t *output
         return;
     }
 
-    int error_code = i2c_read_blocking(this->hardwareInterface,
+    i2c_read_blocking(this->hardwareInterface,
                       address,
                       outputArray,
                       consecutiveBytes,
