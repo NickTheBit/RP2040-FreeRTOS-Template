@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "HAL/I2CInterface.hh"
+#include "Interfaces/I2CInterface.hh"
 #include "BME280_defs.hh"
 
 struct filteredMeasurements {

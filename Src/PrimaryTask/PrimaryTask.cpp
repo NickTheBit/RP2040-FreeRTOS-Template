@@ -7,8 +7,8 @@
 
 #include "PrimaryTask.hh"
 #include "main/main.h"
-#include "HAL/RP2040/PR2040_GPIO/RP2040_GPIOPin.hh"
-#include "HAL/RP2040/RP2040_I2C/RP2040_I2C.h"
+#include "Architectures/RP2040/PR2040_GPIO/RP2040_GPIOPin.hh"
+#include "Architectures/RP2040/RP2040_I2C/RP2040_I2C.h"
 
 int reg_read(i2c_inst_t *i2c,
              const uint addr,

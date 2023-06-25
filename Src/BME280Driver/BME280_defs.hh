@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include <cstdint>
+
 namespace BME280 {
 
 /* API error codes */

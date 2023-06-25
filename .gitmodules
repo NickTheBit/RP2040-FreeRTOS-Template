@@ -1,3 +1,6 @@
 [submodule "Middlewares/FreeRTOS-Kernel"]
 	path = Middlewares/FreeRTOS-Kernel
 	url = https://github.com/FreeRTOS/FreeRTOS-Kernel.git
+[submodule "Libs/HAL"]
+	path = Libs/HAL
+	url = git@github.com:NickTheBit/HAL.git
