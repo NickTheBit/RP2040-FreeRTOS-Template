@@ -43,7 +43,7 @@ add_executable(${PROJECT_NAME})
 target_include_directories(${PROJECT_NAME} PUBLIC
         ${PROJECT_SOURCE_DIR}/Src/
         ${PROJECT_SOURCE_DIR}/Src/main/
-        ${PROJECT_SOURCE_DIR}/Src/HAL/)
+        ${PROJECT_SOURCE_DIR}/Libs/HAL/)
 
 file(GLOB_RECURSE PROJECT_SOURCES Src/*.cpp)
 
@@ -57,11 +57,16 @@ target_compile_options(${PROJECT_NAME} PUBLIC
     -g
     )
 
+# Configuring Hal Library
+set(HAL_SELECTED_ARCHITECTURE "RP2040")
+add_subdirectory(Libs/HAL)
+
 # Link to built libraries
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC
     pico_stdlib
     hardware_i2c
-    FreeRTOS)
+    FreeRTOS
+    HAL)
 
 # Enable/disable STDIO via USB and UART
 pico_enable_stdio_usb(${PROJECT_NAME} 1)
