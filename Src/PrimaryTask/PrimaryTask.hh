@@ -7,4 +7,4 @@
 
 #pragma once
 
-void primaryTask(void *arguments);
+[[noreturn]] void primaryTask(void *arguments);
