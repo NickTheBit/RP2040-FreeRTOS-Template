@@ -49,6 +49,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 
 file(GLOB_RECURSE PROJECT_SOURCES Src/*.cpp)
 list(APPEND PROJECT_SOURCES Src/freertos.c)
+list(APPEND PROJECT_SOURCES Src/printf/printf.c)
 
 target_sources(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCES})
 
