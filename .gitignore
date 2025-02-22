@@ -1,5 +1,5 @@
 build/
 .idea/
 .vscode/
-cmake-build-debug-rp2040/
+cmake-build-*
 pico.cfg
