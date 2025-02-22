@@ -48,6 +48,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
         ${PROJECT_SOURCE_DIR}/Libs/HAL/)
 
 file(GLOB_RECURSE PROJECT_SOURCES Src/*.cpp)
+list(APPEND PROJECT_SOURCES Src/freertos.c)
 
 target_sources(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCES})
 
