@@ -12,7 +12,6 @@
 
 [[noreturn]] void primaryTask(void *arguments) {
 	// Configure the Pico's on-board LED as a heartbeat indicator.
-
 	auto heartbeatPin = RP2040_GPIOPin(PICO_DEFAULT_LED_PIN, GPIO_OUT);
 	auto i2cBus1 = RP2040_I2C(i2c0, 20, 21, false, 1000 * 100);
 

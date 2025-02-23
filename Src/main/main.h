@@ -38,19 +38,6 @@
 extern "C" {
 #endif
 
-/**
- * CONSTANTS
- */
-#define RED_LED_PIN 20
-
-/**
- * PROTOTYPES
- */
-void led_task_pico(void *unused_arg);
-void led_task_gpio(void *unused_arg);
-void log_debug(const char *msg);
-void log_device_info(void);
-
 #ifdef __cplusplus
 } // extern "C"
 #endif
