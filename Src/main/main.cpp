@@ -26,7 +26,6 @@ int main() {
 
 	primaryTaskHandle = xTaskCreateStatic(primaryTask, "primaryTask", primary_task_memory, nullptr, 1, primaryTask_puxBuffer, &primaryTask_tcbBuffer);
 
-
 	// Reporting Firmware info on UART
 	printf(
 		"*************************************\n\t%s\n-------------------------------------\nVersion: %d.%d.%d\nCommit hash: %x\n*************************************\n",
